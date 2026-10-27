@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Music Player</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+
+<body>
+    {% include 'nav.html' %}
+
+    <main class="main-container">
+
+
+        <aside class="left-panel">
+
+            {% include 'left.html' %}
+
+        </aside>
+
+        <section class="middle-panel">
+
+            {% include 'middel.html' %}
+
+        </section>
+
+        <aside class="right-panel">
+
+            {% include 'right.html' %}
+
+        </aside>
+
+
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* =====================================
+                   SONG DATA
+                ===================================== */
+
+                const songs = [
+
+                    {
+                        image: "{% static 'images/poster1.jpg' %}",
+                        audio: "{% static 'songs/audio1.mp3' %}",
+                        video: "{% static 'videos/video1.mp4' %}"
+                    },
+
+                    {
+                        image: "{% static 'images/poster2.jpg' %}",
+                        audio: "{% static 'songs/audio2.mp3' %}",
+                        video: "{% static 'videos/video2.mp4' %}"
+                    },
+
+                    {
+                        image: "{% static 'images/poster3.jpg' %}",
+                        audio: "{% static 'songs/audio3.mp3' %}",
+                        video: "{% static 'videos/video3.mp4' %}"
+                    },
+
+                    {
+                        image: "{% static 'images/poster4.jpg' %}",
+                        audio: "{% static 'songs/audio4.mp3' %}",
+                        video: "{% static 'videos/video4.mp4' %}"
+                    },
+
+                    {
+                        image: "{% static 'images/poster5.jpg' %}",
+                        audio: "{% static 'songs/audio5.mp3' %}",
+                        video: "{% static 'videos/video5.mp4' %}"
+                    }
+
+                ];
+
+
+
+                /* =====================================
+                   GET HTML ELEMENTS
+                ===================================== */
+
+                const posters =
+                    document.querySelectorAll(
+                        ".poster-card"
+                    );
+
+
+                const audio =
+                    document.getElementById(
+                        "audioPlayer"
+                    );
+
+
+                const video =
+                    document.getElementById(
+                        "videoPlayer"
+                    );
+
+
+                const playButton =
+                    document.getElementById(
+                        "playButton"
+                    );
+
+
+                const nextButton =
+                    document.getElementById(
+                        "nextButton"
+                    );
+
+
+                const previousButton =
+                    document.getElementById(
+                        "previousButton"
+                    );
+
+
+                const progressBar =
+                    document.getElementById(
+                        "progressBar"
+                    );
+
+
+                const volumeControl =
+                    document.getElementById(
+                        "volumeControl"
+                    );
+
+
+                const currentImage =
+                    document.getElementById(
+                        "currentImage"
+                    );
+
+
+                const currentTime =
+                    document.getElementById(
+                        "currentTime"
+                    );
+
+
+                const totalTime =
+                    document.getElementById(
+                        "totalTime"
+                    );
+
+
+
+                /* =====================================
+                   CURRENT SONG
+                ===================================== */
+
+                let currentSong = 0;
+
+
+
+                /* =====================================
+                   POSTER CLICK
+                ===================================== */
+
+                posters.forEach(
+                    function (poster, index) {
+
+                        poster.addEventListener(
+                            "click",
+                            function () {
+
+                                currentSong = index;
+
+                                playSong(currentSong);
+
+                            }
+                        );
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   PLAY SONG
+                ===================================== */
+
+                function playSong(index) {
+
+                    const song = songs[index];
+
+
+                    /* Remove previous selection */
+
+                    posters.forEach(
+                        function (poster) {
+
+                            poster.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    /* Highlight selected poster */
+
+                    posters[index].classList.add(
+                        "active"
+                    );
+
+
+                    /* Set audio */
+
+                    audio.src = song.audio;
+
+
+                    /* Set video */
+
+                    video.src = song.video;
+
+
+                    /* Set footer image */
+
+                    currentImage.src = song.image;
+
+
+                    /* Start audio */
+
+                    audio.play();
+
+
+                    /* Start video */
+
+                    video.play();
+
+
+                    /* Reset progress */
+
+                    progressBar.value = 0;
+
+                }
+
+
+
+                /* =====================================
+                   PLAY / PAUSE
+                ===================================== */
+
+                playButton.addEventListener(
+                    "click",
+                    function () {
+
+                        if (audio.paused) {
+
+                            audio.play();
+
+                            video.play();
+
+                        }
+
+                        else {
+
+                            audio.pause();
+
+                            video.pause();
+
+                        }
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   NEXT SONG
+                ===================================== */
+
+                nextButton.addEventListener(
+                    "click",
+                    function () {
+
+                        currentSong++;
+
+                        if (
+                            currentSong >= songs.length
+                        ) {
+
+                            currentSong = 0;
+
+                        }
+
+                        playSong(currentSong);
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   PREVIOUS SONG
+                ===================================== */
+
+                previousButton.addEventListener(
+                    "click",
+                    function () {
+
+                        currentSong--;
+
+                        if (currentSong < 0) {
+
+                            currentSong =
+                                songs.length - 1;
+
+                        }
+
+                        playSong(currentSong);
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   AUDIO TIME UPDATE
+                ===================================== */
+
+                audio.addEventListener(
+                    "timeupdate",
+                    function () {
+
+                        if (!audio.duration) {
+
+                            return;
+
+                        }
+
+
+                        const percentage =
+                            (
+                                audio.currentTime /
+                                audio.duration
+                            ) * 100;
+
+
+                        progressBar.value =
+                            percentage;
+
+
+                        currentTime.textContent =
+                            formatTime(
+                                audio.currentTime
+                            );
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   AUDIO LOADED
+                ===================================== */
+
+                audio.addEventListener(
+                    "loadedmetadata",
+                    function () {
+
+                        totalTime.textContent =
+                            formatTime(
+                                audio.duration
+                            );
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   PROGRESS BAR
+                ===================================== */
+
+                progressBar.addEventListener(
+                    "input",
+                    function () {
+
+                        if (!audio.duration) {
+
+                            return;
+
+                        }
+
+
+                        audio.currentTime =
+                            (
+                                progressBar.value / 100
+                            ) * audio.duration;
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   VOLUME
+                ===================================== */
+
+                volumeControl.addEventListener(
+                    "input",
+                    function () {
+
+                        audio.volume =
+                            volumeControl.value;
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   AUDIO PLAY
+                ===================================== */
+
+                audio.addEventListener(
+                    "play",
+                    function () {
+
+                        playButton.textContent = "❚❚";
+
+                        video.play();
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   AUDIO PAUSE
+                ===================================== */
+
+                audio.addEventListener(
+                    "pause",
+                    function () {
+
+                        playButton.textContent = "▶";
+
+                        video.pause();
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   AUDIO ENDED
+                ===================================== */
+
+                audio.addEventListener(
+                    "ended",
+                    function () {
+
+                        currentSong++;
+
+                        if (
+                            currentSong >= songs.length
+                        ) {
+
+                            currentSong = 0;
+
+                        }
+
+                        playSong(currentSong);
+
+                    }
+                );
+
+
+
+                /* =====================================
+                   VIDEO MUTED
+                ===================================== */
+
+                video.muted = true;
+
+
+
+                /* =====================================
+                   FORMAT TIME
+                ===================================== */
+
+                function formatTime(seconds) {
+
+                    if (isNaN(seconds)) {
+
+                        return "0:00";
+
+                    }
+
+
+                    const minutes =
+                        Math.floor(
+                            seconds / 60
+                        );
+
+
+                    const secs =
+                        Math.floor(
+                            seconds % 60
+                        );
+
+
+                    return minutes + ":" +
+                        (
+                            secs < 10
+                                ? "0"
+                                : ""
+                        ) +
+                        secs;
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+</body>
+
+</html>

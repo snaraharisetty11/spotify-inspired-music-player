@@ -1,0 +1,113 @@
+{% load static %}
+
+<footer class="music-player">
+
+
+    <!-- =========================
+         LEFT: CURRENT SONG
+    ========================== -->
+
+    <div class="current-song">
+
+        <img
+            id="currentImage"
+            src="{% static 'images/poster1.jpg' %}"
+            alt=""
+        >
+
+    </div>
+
+
+
+    <!-- =========================
+         CENTER: CONTROLS
+    ========================== -->
+
+    <div class="player-center">
+
+
+        <div class="control-buttons">
+
+            <button id="shuffleButton">
+                🔀
+            </button>
+
+
+            <button id="previousButton">
+                ⏮
+            </button>
+
+
+            <button id="playButton">
+                ▶
+            </button>
+
+
+            <button id="nextButton">
+                ⏭
+            </button>
+
+
+            <button id="repeatButton">
+                🔁
+            </button>
+
+        </div>
+
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-container">
+
+            <span id="currentTime">
+                0:00
+            </span>
+
+
+            <input
+                type="range"
+                id="progressBar"
+                min="0"
+                max="100"
+                value="0"
+            >
+
+
+            <span id="totalTime">
+                0:00
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         RIGHT: VOLUME
+    ========================== -->
+
+    <div class="volume-control">
+
+        <span>🔊</span>
+
+        <input
+            type="range"
+            id="volumeControl"
+            min="0"
+            max="1"
+            step="0.01"
+            value="1"
+        >
+
+    </div>
+
+
+
+    <!-- AUDIO ELEMENT -->
+
+    <audio id="audioPlayer"></audio>
+
+
+</footer>

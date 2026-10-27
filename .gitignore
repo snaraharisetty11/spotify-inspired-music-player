@@ -1,0 +1,15 @@
+
+# Local media files — do not upload
+home/static/images/
+home/static/songs/
+home/static/videos/
+
+# Secrets and local database
+.env
+db.sqlite3
+
+# Python generated files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
